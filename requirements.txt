@@ -1,0 +1,3 @@
+PyTelegramBotAPI
+colorama
+pysqlite3 
