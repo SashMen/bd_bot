@@ -8,12 +8,15 @@ import colorama
 import conDB as db
 from colorama import Fore, Back, Style
 
-
+colorama.init()
 bot = telebot.TeleBot(config.TOKEN)
 
 bnames = []
 bdate = []
 chatid = config.CHATID # chat id from config
+
+def send_message(message):
+    bot.send_message(chatid, message)
 
 def checkBdays():
     print('Checking bdays...')
@@ -23,7 +26,7 @@ def checkBdays():
     nextWeek = today + td(days=7)
     for index, item in enumerate(bdate):
         if (db.checkmessage(str(bnames[index]), str(today))):
-            print('Oooops, repeated request. ')
+            print(Fore.YELLOW + 'Oooops, repeated request. ' + str(bnames[index]))
             continue
         date = item
         date = dt.strptime(date, '%d-%m-%Y')
@@ -37,10 +40,6 @@ def checkBdays():
             send_message('Постой-ка, ' + bnames[index] + ', у тебя же ДР через неделю!')
         db.addrow(bnames[index], today)
 
-def send_message(message):
-    bot.send_message(chatid, message)
-
-
 ContentFromCSV = []
 with open('input.csv', encoding='utf8', newline='') as File:
     reader = csv.reader(File)
@@ -52,7 +51,7 @@ for s in ContentFromCSV:
     year = dt.today().strftime('%Y')
     bnames.append(lst[0])
     bdate.append((lst[1] + '-' + lst[2] + '-' + year))
-colorama.init()
+
 while True:
     res = db.checkday(str(dt.today().strftime('%Y-%m-%d')))
     print('\n')
@@ -60,13 +59,10 @@ while True:
     print(daynow)
     if(not res):
         db.deletedata()
-        db.resetidx()
-        checkBdays()
-        print('Waiting...')
-    else:
-        print(Fore.YELLOW + 'Oooops, repeated sending congratulation. ')
+    checkBdays()
     print(Style.RESET_ALL)
-    time.sleep(5) # 1 day in seconds
+    print('Waiting...')
+    time.sleep(86400) # 1 day in seconds
 
 
 
