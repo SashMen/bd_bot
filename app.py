@@ -63,6 +63,7 @@ while True:
     print(Style.RESET_ALL)
     print('Waiting...')
     time.sleep(86400) # 1 day in seconds
+    print('sanek')
 
 
 
