@@ -13,7 +13,7 @@ bot = telebot.TeleBot(config.TOKEN)
 
 bnames = []
 bdate = []
-chatid = config.CHATID # chat id from config
+chatid = config.CHATID # chat id from config 
 
 def send_message(message):
     bot.send_message(chatid, message)
